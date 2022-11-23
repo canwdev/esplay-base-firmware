@@ -8,7 +8,7 @@ The code based on odroid go base firmware, modified using hardware drivers to be
 
 - 禁用开机动画
 - UI微调
-- 消除所有警告（未测试）
+- 消除所有警告
 
 ## 编译
 
@@ -19,6 +19,7 @@ The code based on odroid go base firmware, modified using hardware drivers to be
 components/spi_flash/include/esp_partition.h
 ```
 void esp_partition_reload_table();
+#endif /* __ESP_PARTITION_H__ */
 ```
 
 components/spi_flash/partition.c
@@ -50,12 +51,14 @@ void esp_partition_reload_table()
 #idf.py clean
 idf.py build
 # 刷入
-idf.py -p /dev/ttyUSB0 -b 921600 flash 
+idf.py -p /dev/ttyUSB0 -b 921600 flash
 ```
+
+![flash](./flash.jpg)
 
 ## Linux 权限问题 /dev/ttyUSB0
 
-刷入命令：`idf.py -p /dev/ttyUSB0 -b 921600 flash ` 会遇到没有权限的问题，此时可以用 `sudo` 来提权，或者输入以下命令，重启解决（[与 ESP32 创建串口连接](https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/get-started/establish-serial-connection.html#linux-dialout-group) ）
+刷入命令：`idf.py -p /dev/ttyUSB0 -b 921600 flash` 会遇到没有权限的问题，此时可以用 `sudo` 来提权，或者输入以下命令，重启解决（[与 ESP32 创建串口连接](https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/get-started/establish-serial-connection.html#linux-dialout-group) ）
 - Ubuntu:  `sudo usermod -a -G dialout $USER`
 - ArchLinux: `sudo usermod -a -G uucp $USER`
 
