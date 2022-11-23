@@ -20,7 +20,7 @@ void renderGfx(short left, short top, short width, short height, uint16_t* buffe
 void display_prepare();
 void display_show_hourglass();
 void display_show_empty_battery();
-void display_show_splash();
+// void display_show_splash();
 void display_clear(uint16_t color);
 void set_display_brightness(int percent);
 void display_prepare();

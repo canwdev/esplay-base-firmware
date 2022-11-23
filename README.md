@@ -40,3 +40,37 @@ void esp_partition_reload_table()
 
 ```
 [esplay-hardware]: https://github.com/pebri86/esplay-hardware
+
+---
+
+修改内容：
+
+- 禁用开机动画
+- UI微调
+
+安装 esp-idf-v4.4 环境 [ESP-IDF 编程指南 - ESP32 - — ESP-IDF 编程指南 v4.4.3 文档 (espressif.com)](https://docs.espressif.com/projects/esp-idf/zh_CN/v4.4.3/esp32/index.html)
+
+执行命令开始编译：
+```sh
+#get_idf
+mkdir build
+cd build
+cmake ..
+make -j4
+```
+或
+```sh
+#get_idf
+idf.py build
+# 刷入
+idf.py -p /dev/ttyUSB0 -b 921600 flash 
+```
+
+刷入权限问题：输入以下命令，重启解决（[与 ESP32 创建串口连接](https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/get-started/establish-serial-connection.html#linux-dialout-group) ）
+- Ubuntu:  `sudo usermod -a -G dialout $USER`
+- Arch Linux: `sudo usermod -a -G uucp $USER`
+
+编译过程中会因为警告导致编译失败，禁用 make 警告重新编译：
+- 搜索 `-Werror=all` 替换为 ` `（空字符串）
+- 搜索 `-Werror` 替换为 `-Wno-error`
+- 然后再次 `make`

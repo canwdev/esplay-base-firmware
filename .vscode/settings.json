@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "gamepad.h": "c",
+        "sdcard.h": "c",
+        "display.h": "c"
+    },
+    "idf.adapterTargetName": "esp32"
+}

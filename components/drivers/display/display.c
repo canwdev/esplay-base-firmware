@@ -13,7 +13,7 @@
 #include "driver/ledc.h"
 #include "driver/rtc_io.h"
 #include "display.h"
-#include "splash.h"
+// #include "splash.h"
 
 #define LINE_BUFFERS (2)
 #define LINE_COUNT (24)
@@ -240,23 +240,22 @@ void renderGfx(short left, short top, short width, short height, uint16_t *buffe
     }
 }
 
-void display_show_splash()
-{
-    display_clear(0xffff);
-    for (short i = 1; i < 151; ++i)
-    {
-        renderGfx((LCD_H_RES - splash_screen.width) / 2,
-                  (LCD_V_RES - splash_screen.height) / 2,
-                  i,
-                  splash_screen.height,
-                  splash_screen.pixel_data,
-                  0,
-                  0,
-                  150);
-        vTaskDelay(2);
-    }
-    vTaskDelay(100);
-}
+// void display_show_splash()
+// {
+//     display_clear(0xffff);
+//     for (short i = 1; i < 151; ++i)
+//     {
+//         renderGfx((LCD_H_RES - splash_screen.width) / 2,
+//                   (LCD_V_RES - splash_screen.height) / 2,
+//                   i,
+//                   splash_screen.height,
+//                   splash_screen.pixel_data,
+//                   0,
+//                   0,
+//                   150);
+//     }
+//     vTaskDelay(2);
+// }
 
 void display_clear(uint16_t color)
 {
@@ -344,5 +343,5 @@ void display_init()
     ESP_ERROR_CHECK(esp_lcd_panel_swap_xy(panel_handle, true));
 
     // Turn ON Display
-    set_display_brightness(100);
+    set_display_brightness(50);
 }

@@ -169,6 +169,7 @@ static void DisplayError(const char* message)
     UG_PutString(left, top, message);
 
     UpdateDisplay();
+    vTaskDelay(100);
 }
 
 static void DisplayMessage(const char* message)
@@ -916,22 +917,22 @@ void flash_firmware(const char* fullPath)
 
 static void ui_draw_title()
 {
-    const char* TITLE = "ESPLAY MICRO BOOTLOADER";
+    const char* TITLE = "-= ESPLAY MICRO BOOTLOADER =-";
 
     UG_FillFrame(0, 0, 319, 239, C_WHITE);
 
     // Header
-    UG_FillFrame(0, 0, 319, 15, C_MIDNIGHT_BLUE);
+    UG_FillFrame(0, 0, 319, 15, C_DARK_OLIVE_GREEN);
     UG_FontSelect(&FONT_8X8);
     const short titleLeft = (320 / 2) - (strlen(TITLE) * 9 / 2);
     UG_SetForecolor(C_WHITE);
-    UG_SetBackcolor(C_MIDNIGHT_BLUE);
+    UG_SetBackcolor(C_DARK_OLIVE_GREEN);
     UG_PutString(titleLeft, 4, TITLE);
 
     // Footer
-    UG_FillFrame(0, 239 - 16, 319, 239, C_MIDNIGHT_BLUE);
+    UG_FillFrame(0, 239 - 16, 319, 239, C_DARK_OLIVE_GREEN);
     const short footerLeft = (320 / 2) - (strlen(VERSION) * 9 / 2);
-    UG_SetForecolor(C_DARK_GRAY);
+    // UG_SetForecolor(C_DARK_GRAY);
     UG_PutString(footerLeft, 240 - 4 - 8, VERSION);
 }
 
@@ -1220,6 +1221,7 @@ void app_main(void)
     strcat(VERSION, GITREV);
 
     printf("esplay-base-firmware (%s). HEAP=%#010x\n", VERSION, esp_get_free_heap_size());
+    printf("\n\n!!! Hello world! from esp32 main.c app_main !!!\n\n");
 
     nvs_flash_init();
 
@@ -1227,8 +1229,8 @@ void app_main(void)
 
 
     display_init();
-    display_show_splash();
-    display_clear(0xffff);
+    // display_show_splash();
+    // display_clear(0xffffff);
 
     UG_Init(&gui, pset, 320, 240);
 
