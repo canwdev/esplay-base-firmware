@@ -4,5 +4,6 @@
         "sdcard.h": "c",
         "display.h": "c"
     },
-    "idf.adapterTargetName": "esp32"
+    "idf.adapterTargetName": "esp32",
+    "idf.flashType": "UART"
 }

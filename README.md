@@ -47,29 +47,28 @@ void esp_partition_reload_table()
 
 - 禁用开机动画
 - UI微调
+- 消除所有警告（未测试）
 
 安装 esp-idf-v4.4 环境 [ESP-IDF 编程指南 - ESP32 - — ESP-IDF 编程指南 v4.4.3 文档 (espressif.com)](https://docs.espressif.com/projects/esp-idf/zh_CN/v4.4.3/esp32/index.html)
 
-执行命令开始编译：
+
+## 编译
+
 ```sh
 #get_idf
-mkdir build
-cd build
-cmake ..
-make -j4
-```
-或
-```sh
-#get_idf
-#rm -r build   
+#idf.py clean
 idf.py build
 # 刷入
 idf.py -p /dev/ttyUSB0 -b 921600 flash 
 ```
 
-刷入权限问题：输入以下命令，重启解决（[与 ESP32 创建串口连接](https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/get-started/establish-serial-connection.html#linux-dialout-group) ）
+## Linux 权限问题 /dev/ttyUSB0
+
+刷入命令：`idf.py -p /dev/ttyUSB0 -b 921600 flash ` 会遇到没有权限的问题，此时可以用 `sudo` 来提权，或者输入以下命令，重启解决（[与 ESP32 创建串口连接](https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/get-started/establish-serial-connection.html#linux-dialout-group) ）
 - Ubuntu:  `sudo usermod -a -G dialout $USER`
-- Arch Linux: `sudo usermod -a -G uucp $USER`
+- ArchLinux: `sudo usermod -a -G uucp $USER`
+
+---
 
 编译过程中会因为警告导致编译失败，禁用 make 警告重新编译：
 - 搜索 `-Werror=all` 替换为 ` `（空字符串）

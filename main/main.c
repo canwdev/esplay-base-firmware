@@ -52,7 +52,7 @@ char tempstring[512];
 #define ITEM_COUNT (4)
 char** files;
 int fileCount;
-const char* path = "/sd/esplay/firmware";
+char* path = "/sd/esplay/firmware";
 char* VERSION = NULL;
 
 #define TILE_WIDTH (86)
@@ -149,16 +149,16 @@ ui_firmware_image_get_exit:
     fclose(file);
 }
 
-static void ClearScreen()
-{
-}
+// static void ClearScreen()
+// {
+// }
 
 static void UpdateDisplay()
 {
     ui_update_display();
 }
 
-static void DisplayError(const char* message)
+static void DisplayError(char* message)
 {
     UG_FontSelect(&FONT_8X12);
     short left = (320 / 2) - (strlen(message) * 9 / 2);
@@ -172,7 +172,7 @@ static void DisplayError(const char* message)
     vTaskDelay(100);
 }
 
-static void DisplayMessage(const char* message)
+static void DisplayMessage(char* message)
 {
     UG_FontSelect(&FONT_8X12);
     short left = (320 / 2) - (strlen(message) * 9 / 2);
@@ -206,7 +206,7 @@ static void DisplayProgress(int percent)
     //UpdateDisplay();
 }
 
-static void DisplayFooter(const char* message)
+static void DisplayFooter(char* message)
 {
     UG_FontSelect(&FONT_8X12);
     short left = (320 / 2) - (strlen(message) * 9 / 2);
@@ -219,7 +219,7 @@ static void DisplayFooter(const char* message)
     UpdateDisplay();
 }
 
-static void DisplayHeader(const char* message)
+static void DisplayHeader(char* message)
 {
     UG_FontSelect(&FONT_8X12);
     short left = (320 / 2) - (strlen(message) * 9 / 2);
@@ -301,9 +301,8 @@ static void write_partition_table(esplay_partition_t* parts, size_t parts_count)
 {
     esp_err_t err;
 
-
     // Read table
-    const esp_partition_info_t* partition_data = (const esp_partition_info_t*)malloc(ESP_PARTITION_TABLE_MAX_LEN);
+    esp_partition_info_t* partition_data = (esp_partition_info_t*)malloc(ESP_PARTITION_TABLE_MAX_LEN);
     if (!partition_data)
     {
         DisplayError("TABLE MEMORY ERROR");
@@ -371,7 +370,6 @@ static void write_partition_table(esplay_partition_t* parts, size_t parts_count)
 
         offset += parts[i].length;
     }
-
     //abort();
 
     // Erase partition table
@@ -750,11 +748,7 @@ void flash_firmware(const char* fullPath)
                 indicate_error();
             }
 
-
             // TODO: verify
-
-
-
 
             // Notify OK
             sprintf(tempstring, "OK: [%d] Length=%#08x", parts_count, length);
@@ -776,7 +770,7 @@ void flash_firmware(const char* fullPath)
 
     }
 
-    close(file);
+    fclose(file);
 
 
     // Utility
@@ -894,8 +888,7 @@ void flash_firmware(const char* fullPath)
 
     // Write partition table
     write_partition_table(parts, parts_count);
-
-
+	print_partitions();
     free(data);
 
     // Close SD card
@@ -917,7 +910,7 @@ void flash_firmware(const char* fullPath)
 
 static void ui_draw_title()
 {
-    const char* TITLE = "-= ESPLAY MICRO BOOTLOADER =-";
+    char* TITLE = "-= ESPLAY MICRO BOOTLOADER =-";
 
     UG_FillFrame(0, 0, 319, 239, C_WHITE);
 
@@ -1035,7 +1028,7 @@ static void ui_draw_page(char** files, int fileCount, int currentItem)
 	}
 }
 
-const char* ui_choose_file(const char* path)
+const char *ui_choose_file(const char* path)
 {
     const char* result = NULL;
 
@@ -1194,7 +1187,7 @@ static void menu_main()
 
     while(1)
     {
-        const char* fileName = ui_choose_file(path);
+        char* fileName = ui_choose_file(path);
         if (!fileName) abort();
 
         printf("%s: fileName='%s'\n", __func__, fileName);
@@ -1221,7 +1214,6 @@ void app_main(void)
     strcat(VERSION, GITREV);
 
     printf("esplay-base-firmware (%s). HEAP=%#010x\n", VERSION, esp_get_free_heap_size());
-    printf("\n\n!!! Hello world! from esp32 main.c app_main !!!\n\n");
 
     nvs_flash_init();
 
@@ -1230,7 +1222,7 @@ void app_main(void)
 
     display_init();
     // display_show_splash();
-    // display_clear(0xffffff);
+    display_clear(0xffff);
 
     UG_Init(&gui, pset, 320, 240);
 
