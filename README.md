@@ -1,24 +1,28 @@
-# esplay-base-firmware
+# esplay-base-firmware mod
+
 Bootloader or sdcard flasher for ESPlay HW ESP32 based device.
+
 The code based on odroid go base firmware, modified using hardware drivers to be compatible with [esplay-hardware].
 
-Compiling
----------
-Use esp-idf official release version 4.4
+## 修改内容
 
-add this patch to esp-idf
+- 禁用开机动画
+- UI微调
+- 消除所有警告（未测试）
 
+## 编译
+
+安装 esp-idf-v4.4 环境 [ESP-IDF 编程指南 - ESP32 - — ESP-IDF 编程指南 v4.4.3 文档 (espressif.com)](https://docs.espressif.com/projects/esp-idf/zh_CN/v4.4.3/esp32/index.html)
+
+添加下述代码到 ESP-IDF 相关文件：
+
+components/spi_flash/include/esp_partition.h
 ```
-@file components/spi_flash/include/esp_partition.h
-
 void esp_partition_reload_table();
 ```
 
-and 
-
+components/spi_flash/partition.c
 ```
-@file components/spi_flash/partition.c
-
 void esp_partition_reload_table()
 {
     if (!SLIST_EMPTY(&s_partition_list))
@@ -39,20 +43,7 @@ void esp_partition_reload_table()
 }
 
 ```
-[esplay-hardware]: https://github.com/pebri86/esplay-hardware
 
----
-
-修改内容：
-
-- 禁用开机动画
-- UI微调
-- 消除所有警告（未测试）
-
-安装 esp-idf-v4.4 环境 [ESP-IDF 编程指南 - ESP32 - — ESP-IDF 编程指南 v4.4.3 文档 (espressif.com)](https://docs.espressif.com/projects/esp-idf/zh_CN/v4.4.3/esp32/index.html)
-
-
-## 编译
 
 ```sh
 #get_idf
@@ -74,3 +65,5 @@ idf.py -p /dev/ttyUSB0 -b 921600 flash
 - 搜索 `-Werror=all` 替换为 ` `（空字符串）
 - 搜索 `-Werror` 替换为 `-Wno-error`
 - 然后再次 `make`
+
+esplay-hardware: https://github.com/pebri86/esplay-hardware
