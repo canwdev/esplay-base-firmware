@@ -61,6 +61,7 @@ make -j4
 或
 ```sh
 #get_idf
+#rm -r build   
 idf.py build
 # 刷入
 idf.py -p /dev/ttyUSB0 -b 921600 flash 
